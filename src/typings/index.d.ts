@@ -61,6 +61,7 @@ export type RematchDispatcher<P = void, M = void> =
   (P extends void ? ((...args: any[]) => Action<any, any>) :
     M extends void ? ((payload: P) => Action<P, void>) :
     (payload: P, meta: M) => Action<P, M>) &
+    ((payload: P) => Action<P, M>) &
   ((action: Action<P, M>) => Redux.Dispatch<Action<P, M>>) &
   ((action: Action<P, void>) => Redux.Dispatch<Action<P, void>>)
 
