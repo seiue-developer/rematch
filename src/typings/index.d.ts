@@ -17,10 +17,10 @@ export type ExtractRematchStateFromModels<M extends Models> = {
 export type RematchRootState<M extends Models> = ExtractRematchStateFromModels<M>
 
 export type ExtractRematchDispatcherAsyncFromEffect<E> =
-  E extends () => infer R ? RematchDispatcherAsync<void, void, R> :
-  E extends (payload: infer P) => infer R ? RematchDispatcherAsync<P, void, R> :
-  E extends (payload: infer P, meta: infer M) => infer R ? RematchDispatcherAsync<P, M, R> :
-  RematchDispatcherAsync<any, any, any>
+  E extends (payload: unknown) => any ? () => ReturnType<E> :
+  E extends (payload?: infer P) => any ? (payload?: P) => ReturnType<E> :
+  E extends (payload: infer P) => any ? (payload: P) => ReturnType<E> :
+  E extends (payload: infer P, meta: infer M) => any ? (payload: P) => ReturnType<E> : never
 
 export type ExtractRematchDispatchersFromEffectsObject<effects extends ModelEffects<any>> = {
   [effectKey in keyof effects]: ExtractRematchDispatcherAsyncFromEffect<effects[effectKey]>
